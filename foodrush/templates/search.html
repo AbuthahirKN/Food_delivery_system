@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Search Results for "{{ query }}"</h2>
+
+{% if message %}
+    <p class="text-danger">{{ message }}</p>
+{% endif %}
+<ul>
+    {% for food in foods %}
+        <li><a href="{% url 'users:fooddetails' food.id %}">{{ food.food_name }}</a></li>
+    {% empty %}
+        <li>No results found</li>
+    {% endfor %}
+</ul>
+{% endblock %}

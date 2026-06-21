@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+      <section class="py-5 overflow-hidden bg-primary" id="home">
+         <div class="container">
+          <div class="row flex-center">
+            <div class="col-md-5 col-lg-6 order-0 order-md-1 mt-8 mt-md-0"><a class="img-landing-banner" href="#!"><img class="img-fluid" src="{% static 'img/gallery/hero-header.png' %}" alt="hero-header" /></a></div>
+            <div class="col-md-7 col-lg-6 py-8 text-md-start text-center">
+              <h1 class="display-1 fs-md-5 fs-lg-6 fs-xl-8 text-light">Are you starving?</h1>
+              <h1 class="text-800 mb-5 fs-4">Within a few clicks, find meals that<br class="d-none d-xxl-block" />are accessible near you</h1>
+              <div class="card w-xxl-75">
+                <div class="card-body">
+                  <nav>
+<!--                    <div class="nav nav-tabs" id="nav-tab" role="tablist">-->
+<!--                      <button class="nav-link active mb-3" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fas fa-motorcycle me-2"></i>Delivery</button>-->
+<!--                      <button class="nav-link mb-3" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false"><i class="fas fa-shopping-bag me-2"></i>Pickup</button>-->
+<!--                    </div>-->
+                  </nav>
+                  <div class="tab-content mt-3" id="nav-tabContent">
+                      <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                         <form class="row gx-2 gy-2 align-items-center" method="get" action="{% url 'users:search' %}">
+  <div class="col">
+    <div class="input-group-icon">
+      <i class="fas fa-search text-primary input-box-icon"></i>
+      <label class="visually-hidden" for="inputFood">Food</label>
+      <input class="form-control input-box form-foodwagon-control"
+             id="inputFood"
+             type="search"
+             name="q"
+             placeholder="Enter food name"
+             aria-label="Search Food" />
+    </div>
+  </div>
+  <div class="d-grid gap-3 col-sm-auto">
+    <button class="btn btn-primary" type="submit">Find Food</button>
+  </div>
+</form>
+
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+<div class="container mt-4">
+
+    <!-- Popular Foods Section -->
+    <h3 class="mb-4">Popular Foods</h3>
+    <div class="row">
+        {% for food in foods %}
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <a href="{% url 'users:fooddetails' food.id %}">
+                    <img src="{{ food.image.url }}" class="card-img-top" height="200" alt="{{ food.name }}">
+                </a>
+                <div class="card-body text-center">
+                    <h5>{{ food.hotel.hotel_name }}</h5>
+                    <a id="add-btn-{{ food.id }}" href="{% url 'order:addtocart' food.id %}" class="add-btn">ADD +</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No foods available.</p>
+        {% endfor %}
+    </div>
+
+    <hr>
+
+    <!-- Hotels Section -->
+    <h3 class="mb-4">Hotels</h3>
+    <div class="row">
+        {% for hotel in hotels %}
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <a   href="{% url 'users:viewmenu' hotel.id %}"><img src="{{ hotel.image.url }}" class="card-img-top" height="200" alt="{{ hotel.hotel_name }}"></a>
+                <div class="card-body text-center">
+                    <h5>{{ hotel.hotel_name }}</h5>
+                    {% if hotel.avg_rating %}
+                        <div class="rating-badge ms-10"  style="background:#16a34a;color:white;padding:6px 12px;border-radius:999px;display:inline-block;font-weight:bold;" >
+                            {{ hotel.display_rating|floatformat:1 }} ★
+                        </div>
+                    {% else %}
+                        <div class="rating-badge">3.1★</div>
+                    {% endif %}
+                    <br>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No hotels available.</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}

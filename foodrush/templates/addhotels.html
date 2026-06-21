@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% load crispy_forms_tags %}
+<section class="py-5 overflow-hidden bg-primary" id="home">
+  <div class="container">
+    <div class="row flex-center">
+      <!-- Hero Image -->
+      <div class="col-md-5 col-lg-6 order-0 order-md-1 mt-8 mt-md-0">
+        <a class="img-landing-banner" href="#!">
+          <img class="img-fluid" src="{% static 'img/gallery/hero-header.png' %}" alt="hero-header" />
+        </a>
+      </div>
+
+      <!-- Hero Text -->
+      <div class="col-md-7 col-lg-6 py-8 text-md-start text-center">
+        <h1 class="display-1 fs-md-5 fs-lg-6 fs-xl-8 text-light">FoodRush</h1>
+        <h2 class="text-800 mb-5 fs-4">
+          Fast, fresh, and delicious meals<br class="d-none d-xxl-block" />
+          delivered right to you
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container mt-3 p-5 w-50 text-center border border-2 ">
+<h2> Add Hotels</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form|crispy}}
+
+      <input type="submit" class="btn btn-danger">
+</form>
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% load crispy_forms_tags %}
+<div class="container mt-5">
+    <h2>Orders for {{ hotel.hotel_name }}</h2>
+
+    {% for order in orders %}
+        <div class="card mb-3 p-3">
+            <h5>Order ID: {{ order.id }}</h5>
+            <p>Status: {{ order.status }}</p>
+            <p>Total Amount: ₹ {{ order.amount }}</p>
+            <p>Payment Method: {{ order.payment_method }}</p>
+            <p>Date: {{ order.ordered_at }}</p>
+        <a href="{% url 'hotels:updatestatus' hotel.id order.id %}"
+   class="btn btn-primary btn-sm">
+    Update Status
+</a>
+            <h6>Items:</h6>
+            <ul>
+                {% for item in order.items.all %}
+                    <li>{{ item.fooditem.food_name }} × {{ item.quantity }}</li>
+                {% empty %}
+                    <li>No items in this order.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% empty %}
+        <p>No orders found for this hotel.</p>
+    {% endfor %}
+</div>
+{% endblock %}

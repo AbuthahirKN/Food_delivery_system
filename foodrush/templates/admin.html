@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Admin Dashboard</h2>
+    <hr>
+
+<!--    <h4>Total Revenue: ₹{{ total_revenue }}</h4>-->
+
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Hotel</th>
+                <th>Image</th>
+                <th>Revenue (₹)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for hotel in hotels %}
+            <tr>
+                <td>{{ hotel.hotel_name }}</td>
+                <td>
+                    {% if hotel.image %}
+                        <img src="{{ hotel.image.url }}" alt="{{ hotel.hotel_name }}" width="120" height="80">
+                    {% else %}
+                        <span>No image</span>
+                    {% endif %}
+                </td>
+                <td>{{ hotel.revenue|default:0 }}</td>
+                <td>
+                    <!-- View Menu button -->
+                    <a href="{% url 'users:viewmenu' hotel.id %}" class="btn btn-info btn-sm">View Menu</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+

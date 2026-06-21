@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<section class="py-5 overflow-hidden bg-primary" id="home">
+  <div class="container">
+    <div class="row flex-center">
+      <!-- Hero Image -->
+      <div class="col-md-5 col-lg-6 order-0 order-md-1 mt-8 mt-md-0">
+        <a class="img-landing-banner" href="#!">
+          <img class="img-fluid" src="{% static 'img/gallery/hero-header.png' %}" alt="hero-header" />
+        </a>
+      </div>
+
+      <!-- Hero Text -->
+      <div class="col-md-7 col-lg-6 py-8 text-md-start text-center">
+        <h1 class="display-1 fs-md-5 fs-lg-6 fs-xl-8 text-light">FoodRush</h1>
+        <h2 class="text-800 mb-5 fs-4">
+          Fast, fresh, and delicious meals<br class="d-none d-xxl-block" />
+          delivered right to you
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container mt-3 p-5 w-50 text-center border border-2 border-success">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{{ item.image.url }}" class="img-fluid rounded-start" alt="{{ item.food_name }}">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{ item.food_name }}</h5>
+        <p class="card-text">₹{{ item.price }}</p>
+        <p class="card-text">{{ item.description }}</p>
+      </div>
+
+      {% if user.is_authenticated and item.hotel.owner == user %}
+        <div>
+          <a class="btn btn-danger" href="{% url 'hotels:editfood' item.id %}">Edit</a><br>
+          <a class="btn btn-success" href="{% url 'hotels:deletefood' item.id %}">Delete</a><br>
+        </div>
+      {% else %}
+        <div>
+          <a class="btn btn-warning" href="{% url 'order:addtocart' item.id %}">Add To Cart</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

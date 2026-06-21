@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="py-5 overflow-hidden bg-primary" id="home">
+  <div class="container">
+    <div class="row flex-center">
+      <!-- Hero Image -->
+      <div class="col-md-5 col-lg-6 order-0 order-md-1 mt-8 mt-md-0">
+        <a class="img-landing-banner" href="#!">
+          <img class="img-fluid" src="{% static 'img/gallery/hero-header.png' %}" alt="hero-header" />
+        </a>
+      </div>
+
+      <!-- Hero Text -->
+      <div class="col-md-7 col-lg-6 py-8 text-md-start text-center">
+        <h1 class="display-1 fs-md-5 fs-lg-6 fs-xl-8 text-light">FoodRush</h1>
+        <h2 class="text-800 mb-5 fs-4">
+          Fast, fresh, and delicious meals<br class="d-none d-xxl-block" />
+          delivered right to you
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-success text-white">
+            <h3>Update Delivery Status</h3>
+        </div>
+        <div class="card-body">
+
+            <p><strong>Order:</strong> #{{ delivery.order.id }}</p>
+            <p><strong>Customer:</strong>{{ delivery.order.user.username }}</p>
+            <form method="POST">
+                {% csrf_token %}
+
+                <select name="status" class="form-select">
+
+                    <option value="ASSIGNED">ASSIGNED</option>
+                    <option value="PICKED">PICKED</option>
+                    <option value="NEAR DESTINATION">NEAR DESTINATION</option>
+                    <option value="DELIVERED">DELIVERED</option>
+
+                </select>
+
+                <br>
+
+                <button class="btn btn-success">Update Status</button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

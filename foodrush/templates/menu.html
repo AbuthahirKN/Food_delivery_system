@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% load crispy_forms_tags %}
+<section class="py-5 overflow-hidden bg-primary" id="home">
+  <div class="container">
+    <div class="row flex-center">
+      <!-- Hero Image -->
+      <div class="col-md-5 col-lg-6 order-0 order-md-1 mt-8 mt-md-0">
+        <a class="img-landing-banner" href="#!">
+          <img class="img-fluid" src="{% static 'img/gallery/hero-header.png' %}" alt="hero-header" />
+        </a>
+      </div>
+
+      <!-- Hero Text -->
+      <div class="col-md-7 col-lg-6 py-8 text-md-start text-center">
+        <h1 class="display-1 fs-md-5 fs-lg-6 fs-xl-8 text-light">FoodRush</h1>
+        <h2 class="text-800 mb-5 fs-4">
+          Fast, fresh, and delicious meals<br class="d-none d-xxl-block" />
+          delivered right to you
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+    <h2 class="text-center">{{hotel.hotel_name}} Menu</h2>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4 border-2">
+{% for item in menu %}
+<div id="menu-item-{{ item.id }}" class="menu-item">
+
+    <div id="left-{{ item.id }}" class="left">
+
+        <div id="dish-name-{{ item.id }}" class="dish-name">{{ item.food_name }}</div>
+
+
+
+        <div id="price-{{ item.id }}" class="price">₹{{ item.price }}</div>
+        <div id="description-{{ item.id }}" class="description">{{ item.description }}</div>
+
+        <div id="actions-{{ item.id }}" class="actions">
+            <span>🔖</span>
+
+        </div>
+    </div>
+
+    <div id="right-{{ item.id }}" class="right">
+        <a  href="{% url 'users:fooddetails' item.id %}" > <img id="dish-image-{{ item.id }}" class="dish-image" src="{{ item.image.url }}" alt="{{ item.name }}"></a>
+        <form id="add-form-{{ item.id }}" method="post" action="">
+            {% csrf_token %}
+            <a id="add-btn-{{ item.id }}" type="submit" href="{% url 'order:addtocart' item.id %}" class="add-btn">ADD +</a>
+        </form>
+    </div>
+
+</div>
+{% empty %}
+<p id="no-items">No menu items available.</p>
+{% endfor %}
+
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,64 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% load crispy_forms_tags %}
+<section class="py-5 overflow-hidden bg-primary" id="home">
+  <div class="container">
+    <div class="row flex-center">
+      <!-- Hero Image -->
+      <div class="col-md-5 col-lg-6 order-0 order-md-1 mt-8 mt-md-0">
+        <a class="img-landing-banner" href="#!">
+          <img class="img-fluid" src="{% static 'img/gallery/hero-header.png' %}" alt="hero-header" />
+        </a>
+      </div>
+
+      <!-- Hero Text -->
+      <div class="col-md-7 col-lg-6 py-8 text-md-start text-center">
+        <h1 class="display-1 fs-md-5 fs-lg-6 fs-xl-8 text-light">FoodRush</h1>
+        <h2 class="text-800 mb-5 fs-4">
+          Fast, fresh, and delicious meals<br class="d-none d-xxl-block" />
+          delivered right to you
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container mt-4">
+  <h2>Order Tracking</h2>
+  <p>Order #{{ order.id }} — Status: {{ order.status }}</p>
+
+  {% if delivery %}
+    <h4>Delivery Partner: {{ delivery.delivery_partner.username }}</h4>
+    <p>Delivery Status: {{ delivery.status }}</p>
+  {% else %}
+    <p>No delivery partner assigned yet.</p>
+  {% endif %}
+
+  {% if order.status != 'DELIVERED' %}
+    <!-- Progress bar only shows until delivered -->
+    <div class="progress mt-3">
+      <div class="progress-bar
+           {% if order.status == 'PENDING' %} bg-secondary
+           {% elif order.status == 'OUT FOR DELIVERY' %} bg-info
+           {% elif order.status == 'NEAR DESTINATION' %} bg-warning
+           {% elif order.status == 'DELIVERED' %} bg-success
+           {% endif %}"
+           role="progressbar"
+           style="width:
+             {% if order.status == 'PENDING' %}25%
+             {% elif order.status == 'OUT FOR DELIVERY' %}50%
+             {% elif order.status == 'NEAR DESTINATION' %}75%
+             {% elif order.status == 'DELIVERED' %}100%
+             {% endif %}">
+        {{ order.status }}
+      </div>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+
+

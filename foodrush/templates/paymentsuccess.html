@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="py-5 overflow-hidden bg-primary" id="home">
+  <div class="container">
+    <div class="row flex-center">
+      <!-- Hero Image -->
+      <div class="col-md-5 col-lg-6 order-0 order-md-1 mt-8 mt-md-0">
+        <a class="img-landing-banner" href="#!">
+          <img class="img-fluid" src="{% static 'img/gallery/hero-header.png' %}" alt="hero-header" />
+        </a>
+      </div>
+
+      <!-- Hero Text -->
+      <div class="col-md-7 col-lg-6 py-8 text-md-start text-center">
+        <h1 class="display-1 fs-md-5 fs-lg-6 fs-xl-8 text-light">FoodRush</h1>
+        <h2 class="text-800 mb-5 fs-4">
+          Fast, fresh, and delicious meals<br class="d-none d-xxl-block" />
+          delivered right to you
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="container mt-5 text-center">
+    <div class="card shadow p-4">
+
+        <h2 class="text-success">
+            Payment Successful 🎉
+        </h2>
+
+        <hr>
+
+        <p>
+            Thank you for your order,
+            {{ request.user.username }}!
+        </p>
+
+        <p>
+            <strong>Order ID:</strong>
+            {{ order.order_id }}
+        </p>
+
+        <p>
+            <strong>Payment ID:</strong>
+            {{ order.payment_id }}
+        </p>
+
+        <p>
+            <strong>Status:</strong>
+            {{ order.payment_status }}
+        </p>
+
+        <p>
+            <strong>Total Amount:</strong>
+            ₹{{ order.amount }}
+        </p>
+
+        <hr>
+
+        <a href="{% url 'order:history' %}"
+           class="btn btn-primary">
+            View Orders
+        </a>
+
+        <a href="{% url 'users:home' %}"
+           class="btn btn-secondary">
+            Back to Home
+        </a>
+
+    </div>
+</div>
+{% endblock %}
