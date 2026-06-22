@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect,get_object_or_404
+from django.shortcuts import render,redirect,get_object_or_404,HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from hotels.models import FoodItem
@@ -146,73 +146,38 @@ class PlaceOrder(View):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class PaymentSuccess(View):
+
+
     def post(self, request):
         order_id = request.POST.get("razorpay_order_id")
         payment_id = request.POST.get("razorpay_payment_id")
-        signature = request.POST.get("razorpay_signature")
 
-        try:
-            order = Orders.objects.get(order_id=order_id)
-        except Orders.DoesNotExist:
-            return render(request, "paymentfailed.html", {"error": "Order not found"})
-
-        # Verify Razorpay signature
-        msg = f"{order_id}|{payment_id}"
-        generated_signature = hmac.new(
-            settings.RAZORPAY_KEY_SECRET.encode(),
-            msg.encode(),
-            hashlib.sha256
-        ).hexdigest()
-
-        if generated_signature != signature:
-            return render(request, "payment_failed.html", {"error": "Authentication failed"})
-
+        order = Orders.objects.get(order_id=order_id)
 
         if not order.is_ordered:
             order.payment_id = payment_id
             order.payment_status = "Paid"
             order.is_ordered = True
+            print('before')
             order.save()
+            print('after')
 
             cart_items = Cart.objects.filter(user=order.user)
+
             for item in cart_items:
                 OrderItem.objects.create(
                     order=order,
                     fooditem=item.fooditem,
                     quantity=item.quantity
                 )
+
             cart_items.delete()
 
-        return render(request, "paymentsuccess.html", {"order": order})
-
-    # def post(self, request):
-    #     order_id = request.POST.get("razorpay_order_id")
-    #     payment_id = request.POST.get("razorpay_payment_id")
-    #
-    #     order = Orders.objects.get(order_id=order_id)
-    #
-    #     if not order.is_ordered:
-    #         order.payment_id = payment_id
-    #         order.payment_status = "Paid"
-    #         order.is_ordered = True
-    #         order.save()
-    #
-    #         cart_items = Cart.objects.filter(user=order.user)
-    #
-    #         for item in cart_items:
-    #             OrderItem.objects.create(
-    #                 order=order,
-    #                 fooditem=item.fooditem,
-    #                 quantity=item.quantity
-    #             )
-    #
-    #         cart_items.delete()
-    #
-    #     return render(
-    #         request,
-    #         "paymentsuccess.html",
-    #         {"order": order}
-    #     )
+        return render(
+            request,
+            "paymentsuccess.html",
+            {"order": order}
+        )
 
 
 class OrderHistory(View):

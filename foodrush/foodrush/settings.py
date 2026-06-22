@@ -77,9 +77,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 WSGI_APPLICATION = 'foodrush.wsgi.application'
 AUTH_USER_MODEL = 'users.CustomUser'
-RAZORPAY_KEY_ID ='rzp_test_T3nvPgglUuezXN'
+RAZORPAY_KEY_ID ='rzp_test_T4J4tWJ4Jb4ndH'
 
-RAZORPAY_KEY_SECRET='74p0mE42WEnVzWSe1Nvwem0p'
+RAZORPAY_KEY_SECRET='Ti2hwV1o3H0TL6sXSeGRmOWp'
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
