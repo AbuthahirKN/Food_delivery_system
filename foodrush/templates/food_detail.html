@@ -24,29 +24,43 @@
   </div>
 </section>
 
-<div class="container mt-3 p-5 w-50 text-center border border-2 border-success">
-  <div class="row g-0">
-    <div class="col-md-4">
-      <img src="{{ item.image.url }}" class="img-fluid rounded-start" alt="{{ item.food_name }}">
-    </div>
-    <div class="col-md-8">
-      <div class="card-body">
-        <h5 class="card-title">{{ item.food_name }}</h5>
-        <p class="card-text">₹{{ item.price }}</p>
-        <p class="card-text">{{ item.description }}</p>
+<div class="container mt-5">
+  <div class="card shadow-lg border-0 rounded-3 w-75 mx-auto">
+    <div class="row g-0">
+      <!-- Food Image -->
+      <div class="col-md-5">
+        <img src="{{ item.image.url }}" class="img-fluid rounded-start h-100" alt="{{ item.food_name }}">
       </div>
 
-      {% if user.is_authenticated and item.hotel.owner == user %}
-        <div>
-          <a class="btn btn-danger" href="{% url 'hotels:editfood' item.id %}">Edit</a><br>
-          <a class="btn btn-success" href="{% url 'hotels:deletefood' item.id %}">Delete</a><br>
+      <!-- Food Details -->
+      <div class="col-md-7">
+        <div class="card-body text-center p-4">
+          <h3 class="fw-bold">{{ item.food_name }}</h3>
+          <h5 class="text-success fw-bold">₹{{ item.price }}</h5>
+          <p class="text-muted">{{ item.description }}</p>
+
+          <hr>
+
+          {% if user.is_authenticated and item.hotel.owner == user %}
+            <div class="d-flex justify-content-center gap-3">
+              <a class="btn btn-danger btn-lg shadow-sm" href="{% url 'hotels:editfood' item.id %}">
+                <i class="bi bi-pencil-square"></i> Edit
+              </a>
+              <a class="btn btn-success btn-lg shadow-sm" href="{% url 'hotels:delete' item.id %}">
+                <i class="bi bi-trash"></i> Delete
+              </a>
+            </div>
+          {% else %}
+            <div class="d-flex justify-content-center">
+              <a class="btn btn-warning btn-lg shadow-sm" href="{% url 'order:addtocart' item.id %}">
+                <i class="bi bi-cart-plus"></i> Add To Cart
+              </a>
+            </div>
+          {% endif %}
         </div>
-      {% else %}
-        <div>
-          <a class="btn btn-warning" href="{% url 'order:addtocart' item.id %}">Add To Cart</a>
-        </div>
-      {% endif %}
+      </div>
     </div>
   </div>
 </div>
+
 {% endblock %}

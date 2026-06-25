@@ -24,54 +24,65 @@
   </div>
 </section>
 
-<div class="container mt-4">
-    <h2>Hotel Owner Dashboard</h2>
+<div class="container mt-5">
+    <h2 class="mb-4 text-center fw-bold">Hotel Owner Dashboard</h2>
 
-    <div class="row">
+    <div class="row g-4">
         <div class="col-md-3">
-            <div class="card text-center">
+            <div class="card shadow-sm border-0 text-center h-100">
                 <div class="card-body">
-                    <h3>{{ total_foods }}</h3>
-                    <p>Foods</p>
+                    <i class="bi bi-basket-fill fs-2 text-success"></i>
+                    <h3 class="fw-bold mt-2">{{ total_foods }}</h3>
+                    <p class="text-muted">Foods</p>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center">
+            <div class="card shadow-sm border-0 text-center h-100">
                 <div class="card-body">
-                    <h3>{{ total_orders }}</h3>
-                    <p>Orders</p>
+                    <i class="bi bi-receipt fs-2 text-primary"></i>
+                    <h3 class="fw-bold mt-2">{{ total_orders }}</h3>
+                    <p class="text-muted">Orders</p>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center">
+            <div class="card shadow-sm border-0 text-center h-100">
                 <div class="card-body">
-                    <h3>{{ pending }}</h3>
-                    <p>Pending</p>
+                    <i class="bi bi-hourglass-split fs-2 text-warning"></i>
+                    <h3 class="fw-bold mt-2">{{ pending }}</h3>
+                    <p class="text-muted">Pending</p>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center">
+            <div class="card shadow-sm border-0 text-center h-100">
                 <div class="card-body">
-                    <h3>{{reviews}}</h3>
-                    <p>Reviews</p>
+                    <i class="bi bi-star-fill fs-2 text-danger"></i>
+                    <h3 class="fw-bold mt-2">{{ reviews_count }}</h3>
+                    <p class="text-muted">Reviews</p>
                 </div>
             </div>
-
         </div>
-
     </div>
 
-    <hr>
+    <hr class="my-4">
 
-    <a href="{% url 'hotels:fooditems' hotel.id %}" class="btn btn-success">Add Food</a>
-    <a href="{% url 'hotels:hotelreviews' hotel.id %}" class="btn btn-secondary mt-3">View All Reviews</a>
-
-    <a href="{% url 'hotels:hotel_orders' hotel.id %}" class="btn btn-info">Orders</a>
-
-
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+        <a href="{% url 'hotels:fooditems' hotel.id %}" class="btn btn-success btn-lg shadow-sm">
+            <i class="bi bi-plus-circle"></i> Add Food
+        </a>
+        <a href="{% url 'users:viewmenu' hotel.id %}" class="btn btn-info btn-lg shadow-sm">
+            <i class="bi bi-list-check"></i> Menu
+        </a>
+        <a href="{% url 'hotels:hotelreviews' hotel.id %}" class="btn btn-secondary btn-lg shadow-sm">
+            <i class="bi bi-chat-left-text"></i> View Reviews
+        </a>
+        <a href="{% url 'hotels:hotel_orders' hotel.id %}" class="btn btn-info btn-lg shadow-sm">
+            <i class="bi bi-list-check"></i> Orders
+        </a>
+    </div>
 </div>
+
 
 {% endblock %}

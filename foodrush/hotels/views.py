@@ -41,49 +41,6 @@ class HotelDashboard(View):
         return render(request, 'hotelsdashboard.html', context)
 
 
-# class HotelDashboard(View):
-#
-#     def get(self, request, hotel_id):
-#         hotel = get_object_or_404(
-#             Hotel,
-#             id=hotel_id,
-#             owner=request.user
-#         )
-#         foods = FoodItem.objects.filter(hotel=hotel)
-#         orders = Orders.objects.filter(
-#             orderitem__fooditem__hotel=hotel
-#         ).distinct().order_by('-id')
-#         total_foods = foods.count()
-#         total_orders = orders.count()
-#         pending = orders.filter(
-#             status='Pending'
-#         ).count()
-#
-#         reviews = Review.objects.filter(
-#             hotel=hotel
-#         )
-#         context = {
-#             'hotel': hotel,
-#             'total_foods': total_foods,
-#             'total_orders': total_orders,
-#             'pending': pending,
-#             'reviews_count': reviews.count(),
-#
-#             # Latest records
-#             'food_list': foods[:5],
-#             'order_list': orders[:5],
-#             'review_list': reviews.order_by('-id')[:5],
-#         }
-#
-#         return render(request,'dashboard.html',context)
-# class HotelDashboard(View):
-#     def get(self, request):
-#         owner= request.user
-#         hotel = Hotel.objects.get(owner=owner)
-#         foods=FoodItem.objects.filter(hotel=hotel)
-#         context = {'hotel': hotel,'foods':foods}
-#         return render(request,'hotelsdashboard.html' ,context)
-
 class AddFoodItems(View):
     def post(self,request,hotel_id):
         owner=request.user
@@ -152,4 +109,22 @@ class HotelReviews(View):
             'reviews': reviews
         })
 
+class EditHotel(View):
+    def get(self,request,i):
+        hotel=Hotel.objects.get(id=i)
+        form_instance = HotelForm(instance=hotel)
+        context={'form':form_instance,'hotel':hotel}
+        return render(request,'edithotel.html',context)
+    def post(self,request,i):
+        hotel = Hotel.objects.get(id=i)
+        form_instance = HotelForm(request.POST,request.FILES,instance=hotel)
+        if form_instance.is_valid():
+            form_instance.save()
+            return redirect('users:admindashboard')
+        return render(request, 'edithotel.html', {'form':form_instance, 'hotel':hotel})
+class DeleteHotel(View):
+    def post(self,request,i):
+        hotel = Hotel.objects.get(id=i)
+        hotel.delete()
+        return redirect('users:admindashboard')
 

@@ -5,14 +5,13 @@
 <section class="py-5 overflow-hidden bg-primary" id="home">
   <div class="container">
     <div class="row flex-center">
-      <!-- Hero Image -->
+
       <div class="col-md-5 col-lg-6 order-0 order-md-1 mt-8 mt-md-0">
         <a class="img-landing-banner" href="#!">
           <img class="img-fluid" src="{% static 'img/gallery/hero-header.png' %}" alt="hero-header" />
         </a>
       </div>
 
-      <!-- Hero Text -->
       <div class="col-md-7 col-lg-6 py-8 text-md-start text-center">
         <h1 class="display-1 fs-md-5 fs-lg-6 fs-xl-8 text-light">FoodRush</h1>
         <h2 class="text-800 mb-5 fs-4">
@@ -24,65 +23,101 @@
   </div>
 </section>
 
-<h2>Available Orders</h2>
-<table class="table table-bordered">
-    <tr>
-        <th>ID</th>
-        <th>Customer</th>
-        <th>Address</th>
-        <th>Phone</th>
-        <th>Action</th>
-    </tr>
-    {% for order in available_orders %}
-    <tr>
-        <td>#{{ order.id }}</td>
-        <td>{{ order.user.username }}</td>
-        <td>{{ order.address }}</td>
-        <td>{{ order.user.phone }}</td>
-        <td>
-            <a href="{% url 'delivery:accept_order' order.id %}"
-               class="btn btn-success">
-                Accept
-            </a>
-        </td>
-    </tr>
-    {% empty %}
-    <tr>
-        <td colspan="5">No Available Orders</td>
-    </tr>
-    {% endfor %}
-</table>
-<hr>
-<h2>My Deliveries</h2>
-<table class="table table-bordered">
-    <tr>
-        <th>Order</th>
-        <th>Status</th>
-        <th>Action</th>
-    </tr>
-    {% for delivery in my_orders %}
-    <tr>
-        <td>#{{ delivery.order.id }}</td>
-        <td>{{ delivery.status }}</td>
-        <td>
-            <a href="{% url 'delivery:update_order' delivery.id %}"
-               class="btn btn-primary">Update</a>
-        {% if delivery.order.payment_method == "COD" and delivery.order.status != "Delivered" %}
-            <a href="{% url 'delivery:mark' delivery.order.id %}" class="btn btn-success">Mark as Delivered</a>
-        {% endif %}
-        </td>
+<div class="container mt-5">
+    <h2 class="mb-4 fw-bold text-center">Delivery Partner Dashboard</h2>
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-success text-white fw-bold">
+            <i class="bi bi-box-seam"></i> Available Orders
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Customer</th>
+                        <th>Address</th>
+                        <th>Phone</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in available_orders %}
+                        <tr>
+                            <td>#{{ order.id }}</td>
+                            <td>{{ order.user.username }}</td>
+                            <td>{{ order.address }}</td>
+                            <td>{{ order.user.phone }}</td>
+                            <td>
+                                <a href="{% url 'delivery:accept_order' order.id %}"
+                                   class="btn btn-success btn-sm shadow-sm">
+                                    <i class="bi bi-check-circle"></i> Accept
+                                </a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">No Available Orders</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    </tr>
 
-    {% empty %}
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white fw-bold">
+            <i class="bi bi-truck"></i> My Deliveries
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Order</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for delivery in my_orders %}
+                        <tr>
+                            <td>#{{ delivery.order.id }}</td>
+                            <td>
+                                <span class="badge
+                                    {% if delivery.status == 'Delivered' %}
+                                        bg-success
+                                    {% elif delivery.status == 'Pending' %}
+                                        bg-warning text-dark
+                                    {% else %}
+                                        bg-info
+                                    {% endif %}">
+                                    {{ delivery.status }}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="{% url 'delivery:update_order' delivery.id %}"
+                                   class="btn btn-primary btn-sm shadow-sm">
+                                    <i class="bi bi-pencil-square"></i> Update
+                                </a>
+                                {% if delivery.order.payment_method == "COD" and delivery.order.status != "Delivered" %}
+                                    <a href="{% url 'delivery:mark' delivery.order.id %}"
+                                       class="btn btn-success btn-sm shadow-sm">
+                                        <i class="bi bi-check2-all"></i> Mark as Delivered
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">No Assigned Deliveries</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-    <tr>
-        <td colspan="3">No Assigned Deliveries</td>
-    </tr>
-
-    {% endfor %}
-
-</table>
 
 {% endblock %}
 

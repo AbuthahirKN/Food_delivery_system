@@ -24,50 +24,62 @@
 </section>
 
 <div class="container mt-5">
-    <h2>Your Cart</h2>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Food</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in cart %}
-            <tr>
-                <td>{{ item.fooditem.food_name }}</td>
-                <td>₹ {{ item.fooditem.price }}</td>
-                <td>
-                    <a href="{% url 'order:decrement' item.id %}"
-                       class="btn btn-danger btn-sm">
-                        -
-                    </a>
-                    {{ item.quantity }}
-                    <a href="{% url 'order:increment' item.id %}"
-                       class="btn btn-success btn-sm">
-                        +
-                    </a>
-                </td>
-                <td>
-                    ₹ {{ item.totalamount }}
-                </td>
-                <td>
-                    <a href="{% url 'order:removecart' item.id %}"
-                       class="btn btn-dark btn-sm">
-                        Remove
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <h3>Total Amount : ₹ {{ total }}</h3>
-    <a href="{% url 'order:checkout' %}"
-       class="btn btn-primary">
-        Proceed To Checkout
-    </a>
+    <h2 class="fw-bold text-center mb-4">🛒 Your Cart</h2>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Food</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart %}
+                    <tr>
+                        <td class="fw-bold">{{ item.fooditem.food_name }}</td>
+                        <td class="text-success">₹ {{ item.fooditem.price }}</td>
+                        <td>
+                            <div class="d-flex align-items-center justify-content-center gap-2">
+                                <a href="{% url 'order:decrement' item.id %}"
+                                   class="btn btn-outline-danger btn-sm shadow-sm">
+                                    <i class="bi bi-dash-lg"></i>
+                                </a>
+                                <span class="fw-bold">{{ item.quantity }}</span>
+                                <a href="{% url 'order:increment' item.id %}"
+                                   class="btn btn-outline-success btn-sm shadow-sm">
+                                    <i class="bi bi-plus-lg"></i>
+                                </a>
+                            </div>
+                        </td>
+                        <td class="fw-bold">₹ {{ item.totalamount }}</td>
+                        <td>
+                            <a href="{% url 'order:removecart' item.id %}"
+                               class="btn btn-outline-dark btn-sm shadow-sm">
+                                <i class="bi bi-trash"></i> Remove
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">Your cart is empty</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <h3 class="fw-bold">Total Amount: <span class="text-success">₹ {{ total }}</span></h3>
+        <a href="{% url 'order:checkout' %}" class="btn btn-primary btn-lg shadow-sm">
+            <i class="bi bi-credit-card"></i> Proceed To Checkout
+        </a>
+    </div>
 </div>
+
 {% endblock %}

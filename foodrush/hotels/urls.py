@@ -27,4 +27,6 @@ urlpatterns = [
    path('editfood/<int:i>',views.EditFoodItem.as_view(),name='editfood'),
    path('delete/<int:i>',views.DeleteFoodItem.as_view(),name='delete'),
    path('hotelreviews/<int:hotel_id>',views. HotelReviews.as_view(), name='hotelreviews'),
+   path('edithotel/<int:i>',views.EditHotel.as_view(),name='edithotel'),
+   path('deletehotel/<int:i>',views.DeleteHotel.as_view(),name='deletehotel')
 ]

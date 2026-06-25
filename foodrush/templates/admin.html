@@ -1,39 +1,93 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
+
+<section class="py-5 bg-light" id="home">
+  <div class="container">
+    <div class="card shadow-sm border-0">
+      <div class="row g-0 align-items-center">
+
+        <!-- Hero Image -->
+        <div class="col-md-6">
+          <img class="img-fluid rounded-start"
+               src="{% static 'img/gallery/hero-header.png' %}"
+               alt="hero-header"
+               style="object-fit: cover; height: 100%; width: 100%;">
+        </div>
+
+        <!-- Hero Text -->
+        <div class="col-md-6 p-4 text-center text-md-start">
+          <h1 class="fw-bold text-primary">FoodRush</h1>
+          <h2 class="text-muted mb-4">
+            Fast, fresh, and delicious meals<br>
+            delivered right to you
+          </h2>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 <div class="container mt-4">
-    <h2>Admin Dashboard</h2>
-    <hr>
+  <h2 class="fw-bold text-center text-primary mb-4"> Admin Dashboard</h2>
+  <hr>
 
-<!--    <h4>Total Revenue: ₹{{ total_revenue }}</h4>-->
-
-    <table class="table table-striped mt-3">
-        <thead>
-            <tr>
-                <th>Hotel</th>
-                <th>Image</th>
-                <th>Revenue (₹)</th>
-            </tr>
+  <!-- Revenue Table Only -->
+  <div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+      <table class="table table-hover mb-0">
+        <thead class="table-dark text-white">
+          <tr>
+            <th>🏨 Restaurant</th>
+            <th> Image</th>
+            <th> Revenue (₹)</th>
+            <th> Actions</th>
+          </tr>
         </thead>
         <tbody>
-            {% for hotel in hotels %}
-            <tr>
-                <td>{{ hotel.hotel_name }}</td>
-                <td>
-                    {% if hotel.image %}
-                        <img src="{{ hotel.image.url }}" alt="{{ hotel.hotel_name }}" width="120" height="80">
-                    {% else %}
-                        <span>No image</span>
-                    {% endif %}
-                </td>
-                <td>{{ hotel.revenue|default:0 }}</td>
-                <td>
-                    <!-- View Menu button -->
-                    <a href="{% url 'users:viewmenu' hotel.id %}" class="btn btn-info btn-sm">View Menu</a>
-                </td>
-            </tr>
-            {% endfor %}
+          {% for hotel in hotels %}
+          <tr>
+            <td class="fw-bold">{{ hotel.hotel_name }}</td>
+            <td>
+              {% if hotel.image %}
+                <img src="{{ hotel.image.url }}" alt="{{ hotel.hotel_name }}"
+                     class="img-fluid rounded shadow-sm"
+                     style="object-fit: cover; height: 60px; width: 100px;">
+              {% else %}
+                <span class="badge bg-secondary">No image</span>
+              {% endif %}
+            </td>
+            <td><span class="text-success fw-bold">₹ {{ hotel.revenue|default:0 }}</span></td>
+            <td>
+              <a href="{% url 'users:viewmenu' hotel.id %}"
+                 class="btn btn-info btn-sm shadow-sm">
+                 <i class="bi bi-list-ul"></i> View Menu
+              </a>
+                 <a href="{% url 'hotels:edithotel' hotel.id %}"
+                 class="btn btn-success btn-sm shadow-sm">
+                 <i class="bi bi-list-ul"></i> Edit
+              </a>
+                 <form method="post" action="{% url 'hotels:deletehotel' hotel.id %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger btn-sm shadow-sm">
+            <i class="bi bi-trash"></i> Delete
+        </button>
+    </form>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" class="text-center text-muted">No restaurants available</td>
+          </tr>
+          {% endfor %}
         </tbody>
-    </table>
+      </table>
+    </div>
+  </div>
 </div>
+
+
 {% endblock %}
 

@@ -4,14 +4,13 @@
 <section class="py-5 overflow-hidden bg-primary" id="home">
   <div class="container">
     <div class="row flex-center">
-      <!-- Hero Image -->
       <div class="col-md-5 col-lg-6 order-0 order-md-1 mt-8 mt-md-0">
         <a class="img-landing-banner" href="#!">
           <img class="img-fluid" src="{% static 'img/gallery/hero-header.png' %}" alt="hero-header" />
         </a>
       </div>
 
-      <!-- Hero Text -->
+
       <div class="col-md-7 col-lg-6 py-8 text-md-start text-center">
         <h1 class="display-1 fs-md-5 fs-lg-6 fs-xl-8 text-light">FoodRush</h1>
         <h2 class="text-800 mb-5 fs-4">
@@ -24,35 +23,57 @@
 </section>
 
 <div class="container mt-5">
-    <h2>My Orders</h2>
+    <h2 class="fw-bold text-center mb-4 text-primary">📦 My Orders</h2>
 
     {% for order in orders %}
-        <div class="card mb-3 p-3">
-            <h5>Order ID: {{ order.id }}</h5>
-            <p>Status: {{ order.status }}</p>
-            <p>Total Amount: ₹ {{ order.amount }}</p>
-            <p>Date: {{ order.ordered_at }}</p>
+        <div class="card shadow-lg border-0 mb-4">
+            <div class="card-body">
 
-            <h6>Items:</h6>
-            <ul>
-                {% for item in order.items.all %}
-                    <li>
-                        {{ item.fooditem.food_name }} — ₹ {{ item.fooditem.price }} × {{ item.quantity }}
-<!--                    -->
-                        <br>
-                        <small>Hotel: {{ item.fooditem.hotel.hotel_name }}</small>
-                        <br>
-                        <a href="{% url 'users:reviews' item.fooditem.hotel.id %}"
-                           class="btn btn-sm btn-primary mt-2">
-                           Add Review
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-dark">Order #{{ order.id }}</h5>
+                    <span class="badge
+                        {% if order.status == 'Delivered' %}
+                            bg-success
+                        {% elif order.status == 'Pending' %}
+                            bg-warning text-dark
+                        {% else %}
+                            bg-info
+                        {% endif %} px-3 py-2">
+                        {{ order.status }}
+                    </span>
+                </div>
+
+                <p class="mb-1"><strong class="text-secondary">Total:</strong>
+                   <span class="text-success fw-bold">₹ {{ order.amount }}</span>
+                </p>
+                <p class="text-muted"><i class="bi bi-calendar-event"></i> {{ order.ordered_at }}</p>
+
+                <h6 class="fw-bold mt-3 text-primary">Items:</h6>
+                <ul class="list-group list-group-flush">
+                    {% for item in order.items.all %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="fw-bold text-dark">{{ item.fooditem.food_name }}</span>
+                                — <span class="text-success">₹ {{ item.fooditem.price }}</span> × {{ item.quantity }}
+                                <br>
+                                <small class="text-muted">Restaurant: {{ item.fooditem.hotel.hotel_name }}</small>
+                            </div>
+                            <div>
+                                <a href="{% url 'users:reviews' item.fooditem.hotel.id %}"
+                                   class="btn btn-sm btn-outline-primary shadow-sm">
+                                    <i class="bi bi-star-fill text-warning"></i> Add Review
+                                </a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     {% empty %}
-        <p>You have no orders yet.</p>
+        <p class="text-center text-muted">You have no orders yet.</p>
     {% endfor %}
 </div>
+
+
 {% endblock %}
 
