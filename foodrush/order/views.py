@@ -126,6 +126,7 @@ class PlaceOrder(View):
 
             else:
                 order.order_id = 'COD_' + uuid.uuid4().hex[:10]
+                order.payment_id = order.order_id
                 order.is_ordered = True
                 order.payment_status = 'Pending'
                 order.save()
@@ -178,7 +179,6 @@ class PaymentSuccess(View):
             "paymentsuccess.html",
             {"order": order}
         )
-
 
 class OrderHistory(View):
     def get(self,request):

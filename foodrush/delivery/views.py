@@ -52,13 +52,12 @@ class UpdateDelivery(View):
 class MarkAsDelivered(View):
     def get(self,request, i):
       order = get_object_or_404(Orders, id=i)
-      order.status = "Delivered"
+      order.status = "DELIVERED"
       if order.payment_method == "COD":
          order.payment_status = "Paid"
          if not order.payment_id:
              order.payment_id = "CODPAY_" + uuid.uuid4().hex[:10].upper()
          order.save()
-
          return redirect("delivery:deliverydashboard")
 
 
